@@ -6,7 +6,7 @@
 #define BOARD_WIDTH 10
 #define BOARD_HEIGHT 20
 
-int board[BOARD_HEIGHT][BOARD_WIDTH] = {0};
+int game_field[BOARD_HEIGHT][BOARD_WIDTH] = {0};
 int currentPiece[4][4];
 int currentX, currentY;
 int score = 0;
@@ -65,7 +65,7 @@ void drawBoard() {
     clear();
     for (int i = 0; i < BOARD_HEIGHT; i++) {
         for (int j = 0; j < BOARD_WIDTH; j++) {
-            if (board[i][j] || (i >= currentY && i < currentY + 4 && j >= currentX && j < currentX + 4 && currentPiece[i - currentY][j - currentX])) {
+            if (game_field[i][j] || (i >= currentY && i < currentY + 4 && j >= currentX && j < currentX + 4 && currentPiece[i - currentY][j - currentX])) {
                 attron(COLOR_PAIR(1));
                 mvprintw(i, j * 2, "[]");
                 attroff(COLOR_PAIR(1));
@@ -81,7 +81,7 @@ void drawBoard() {
 int checkCollision(int newX, int newY) {
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 4; j++) {
-            if (currentPiece[i][j] && (newY + i >= BOARD_HEIGHT || newX + j < 0 || newX + j >= BOARD_WIDTH || board[newY + i][newX + j])) {
+            if (currentPiece[i][j] && (newY + i >= BOARD_HEIGHT || newX + j < 0 || newX + j >= BOARD_WIDTH || game_field[newY + i][newX + j])) {
                 return 1;
             }
         }
@@ -93,7 +93,7 @@ void mergePiece() {
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 4; j++) {
             if (currentPiece[i][j]) {
-                board[currentY + i][currentX + j] = 1;
+                game_field[currentY + i][currentX + j] = 1;
             }
         }
     }
@@ -103,7 +103,7 @@ void checkLines() {
     for (int i = BOARD_HEIGHT - 1; i >= 0; i--) {
         int lineFull = 1;
         for (int j = 0; j < BOARD_WIDTH; j++) {
-            if (!board[i][j]) {
+            if (!game_field[i][j]) {
                 lineFull = 0;
                 break;
             }
@@ -111,11 +111,11 @@ void checkLines() {
         if (lineFull) {
             for (int k = i; k > 0; k--) {
                 for (int j = 0; j < BOARD_WIDTH; j++) {
-                    board[k][j] = board[k - 1][j];
+                    game_field[k][j] = game_field[k - 1][j];
                 }
             }
             for (int j = 0; j < BOARD_WIDTH; j++) {
-                board[0][j] = 0;
+                game_field[0][j] = 0;
             }
             score += 100;
             i++; // Recheck the same row as it has been shifted down
