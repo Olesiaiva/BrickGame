@@ -31,7 +31,7 @@ typedef enum direction {
 }direction;
 struct coordinate
 {
-    short x, y;
+    short x, y, old_x, old_y;
 };
 
 /* struct that represents one tetris piece in the game */
@@ -215,6 +215,8 @@ void set_game_field(int (*game_field)[10], const int (*pieces)[4][4][4], figure 
     current_figure->rotation = 0;
     current_figure->position.x = 5;
     current_figure->position.y = 1;
+    current_figure->position.old_x = 5;
+    current_figure->position.old_y = 1;
 }
 
 void move_left(int (*game_field)[10], figure *current_figure)
@@ -223,6 +225,7 @@ void move_left(int (*game_field)[10], figure *current_figure)
     current_figure->position.x -= 1;
       if( block_can_move(game_field, current_figure)){
             remove_current_figure(game_field, current_figure);
+            current_figure->position.old_x -= 1;
             
            }else{
             current_figure->position.x += 1;
@@ -234,6 +237,7 @@ void move_right(int (*game_field)[10],figure *current_figure)
     current_figure->position.x += 1;
             if(block_can_move(game_field, current_figure)){
             remove_current_figure(game_field, current_figure);
+            current_figure->position.old_x += 1;
         }else{
             current_figure->position.x -= 1;
         }
@@ -246,8 +250,8 @@ void remove_current_figure(int (*game_field)[10], figure *current_figure)
     {
         for (int j = 0; j < 4; j++)
         {
-            if (game_field[current_figure->position.y + i][current_figure->position.x + j] == current_figure->currentPiece[i][j])
-                game_field[current_figure->position.y + i][current_figure->position.x + j] = 0;
+            if (game_field[current_figure->position.old_y + i][current_figure->position.old_x + j] == current_figure->currentPiece[i][j])
+                game_field[current_figure->position.old_y + i][current_figure->position.old_x + j] = 0;
         }
     }
 
