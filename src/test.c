@@ -24,7 +24,7 @@ enum rotation {
 };
 typedef enum direction { LEFT, RIGHT, DOWN } direction;
 struct coordinate {
-   short x[4], y[4], old_x[4], old_y[4], init_x, init_y, init_old_x, init_old_y;
+  short x[4], y[4], old_x[4], old_y[4], init_x, init_y, init_old_x, init_old_y;
 };
 
 /* struct that represents one tetris piece in the game */
@@ -57,16 +57,6 @@ void position_y_minus(figure *current_figure);
 void eq_old_y_new_y(figure *current_figure);
 void eq_old_x_new_x(figure *current_figure);
 void  add_tmp_game_field(int (*tmp_game_field)[10],figure * tmp_current_figure, const int (*pieces)[4][4][4]);
-int reachet_bottom(int (*game_field)[10],figure *current_figure); 
-int game_on(int (*game_field)[10]);
-
-
-
-
-
-
-// MAIN //
-
 int main() {
   figure current_figure;
   srand(time(0));
@@ -123,81 +113,76 @@ int main() {
   };
 
   int game_field[22][10];
-    for (int i = 0; i < 22; i++) {
-    for (int j = 0; j < 10; j++) {
-      game_field[i][j] = 0;
-    }
-  }
-  for(int i = 0; i < 10; i++){
-    game_field[21][i] = 1;
-  }
-  
+  int t  = 3;
+  set_game_field(game_field, pieces, &current_figure);
+  while (t--)
+ 
+  {
+    // printf("%d %d\n", current_figure.position.init_x, current_figure.position.init_y);
 
-  initscr();  // Инициализация экрана ncurses
-  cbreak();  // Включение режима прямого ввода символов, без буферизации
-  noecho();  // Отключение эхо-режима (не отображать ввод пользователя)
-  curs_set(0);  // Скрыть курсор
-  timeout(100);
-  keypad(stdscr, TRUE);  // Включить клавиатуру
   int ch;
   int key;
-  WINDOW *field = newwin(24, 24, 1, 1);  // Создание окна 'field' размером 22 строк на 12 столбца
-while(game_on(game_field)){
-  set_game_field(game_field, pieces, &current_figure);
 
-  while (reachet_bottom(game_field,&current_figure) && ch  != 113) {
-    wclear(field);
+ 
 
-    for (int i = 0; i < 22; i++) {
-      for (int j = 0; j < 10; j++) {
-        if (game_field[i][j]) {
+
+    // for (int i = 0; i < 22; i++) {
+    //   for (int j = 0; j < 10; j++) {
+       
+    // printf("%d", game_field[i][j]);
+        
     
-          mvwaddch(field, i + 1, j * 2 + 2, ' ' | A_REVERSE);
-          mvwaddch(field, i + 1, j * 2 + 3, ' ' | A_REVERSE);
-        }
+    //   }
+
+    //   printf("\n");
+
+    // }
+    //   printf("\n");
+      
+  // for(int i = 0; i < 4; i++){
+  //   printf("%d %d\n", current_figure.position.y[i], current_figure.position.x[i]);
+  // }
+  //  printf("\n");
+
+      // move_down(game_field, &current_figure, pieces);
+       rotate(game_field, &current_figure, pieces);
+    //       for(int i = 0; i < 4; i++){ 
+    //   printf("%d %d \n", current_figure.position.y[i], current_figure.position.x[i]);
+    // }
+    // printf("\n");
+  
+   add_current_figure(game_field, &current_figure, pieces);
+    // for (int i = 0; i < 22; i++) {
+    //   for (int j = 0; j < 10; j++) {
+       
+    // printf("%d", game_field[i][j]);
+        
     
-      }
+    //   }
 
-    }
- refresh();
-    wrefresh(field);
+    //   printf("\n");
 
-    mvwhline(field, 1, 0, ACS_CKBOARD, 24);  // Горизонтальная линия верх
-    mvwhline(field, 22, 0, ACS_CKBOARD, 24);  // Горизонтальная линия верх
+    // }
+    //   printf("\n");
+    // for(int i = 0; i < 4; i++){ 
+    //   printf("dva %d %d\n", current_figure.position.y[i], current_figure.position.x[i]);
+    // }
+    // printf("\n");
 
-    for (int i = 2; i < 23; i++) {
-      mvwvline(field, i, 1, ACS_CKBOARD,1);  // Вертикальная линия линия ACS_VLINE
-      mvwvline(field, i, 0, ACS_CKBOARD,1);  // Вертикальная линия линия ACS_VLINE
-    }
-    for (int i = 2; i < 23; i++) {
-      mvwvline(field, i, 22, ACS_CKBOARD,1);  // Вертикальная линия линия ACS_VLINE
-      mvwvline(field, i, 23, ACS_CKBOARD,1);  // Вертикальная линия линия ACS_VLINE
-    }
 
-    wrefresh(field);
-    refresh();
-    ch  = getch();
-    if (ch == KEY_DOWN) {
-      move_down(game_field, &current_figure, pieces);
+  
+      // move_left(game_field, &current_figure, pieces);
 
-    } else if (ch == KEY_LEFT) {
-      move_left(game_field, &current_figure, pieces);
+  
+      // move_right(game_field, &current_figure, pieces);
+  
+      // rotate(game_field, &current_figure, pieces);
+    
 
-    } else if (ch == KEY_RIGHT) {
-      move_right(game_field, &current_figure, pieces);
-    } else if (ch == KEY_UP) {
-      rotate(game_field, &current_figure, pieces);
-    }
+   
 
-    add_current_figure(game_field, &current_figure, pieces);
-
-    refresh();
-    wrefresh(field);
-  }
+        // Завершение работы с ncurses
 }
-
-  delwin(field);  // Удаление окна 'field'
-  endwin();       // Завершение работы с ncurses
 
   return 0;
 }
@@ -205,11 +190,15 @@ while(game_on(game_field)){
 void set_game_field(int (*game_field)[10], const int (*pieces)[4][4][4],
                     figure *current_figure) {
   int rand_figure = rand() % 7;
-
+  for (int i = 0; i < 22; i++) {
+    for (int j = 0; j < 10; j++) {
+      game_field[i][j] = 0;
+    }
+  }
 int k  = -1;
   for (int i = 0; i < 4; i++) {
     for (int j = 0; j < 4; j++) {
-      game_field[i + 1][j + 5] = pieces[rand_figure][0][i][j];
+      game_field[i + 1][j + 5] = pieces[0][0][i][j];
       if (game_field[i + 1][j + 5] == 1) {
         ++k;
         current_figure->position.y[k] = i + 1;
@@ -220,7 +209,7 @@ int k  = -1;
       }
     }
   }
-  current_figure->piece = rand_figure;
+  current_figure->piece = 0;
   current_figure->rotation = 0;
   current_figure->old_rotation = 0;
   current_figure->position.init_x = 5;
@@ -256,6 +245,7 @@ void remove_current_figure(int (*game_field)[10], figure *current_figure,
   for (int i = 0; i < 4; i++) {
       game_field[current_figure->position.old_y[i]][current_figure->position.old_x[i]] = 0;
   }
+ 
 }
 
 void add_current_figure(int (*game_field)[10], figure *current_figure,
@@ -273,6 +263,8 @@ void add_current_figure(int (*game_field)[10], figure *current_figure,
           current_figure->position.x[k] = current_figure->position.init_x  + j;
 
         }
+ 
+
   
   }
 
@@ -286,17 +278,11 @@ void rotate(int (*game_field)[10], figure *current_figure,
   } else {
     current_figure->rotation += 1;
   }
-   figure tmp_current_figure = *current_figure;
-  int tmp_game_field[24][10] = {0};
+  figure tmp_current_figure = *current_figure;
+  int tmp_game_field[22][10] = game_field;
 
-  for (int i = 0; i < 22; i++) {
-    for (int j = 0; j < 10; j++) {
-      tmp_game_field[i][j] = game_field[i][j];
-    }
-  }
-
-  add_tmp_game_field(tmp_game_field, &tmp_current_figure, pieces);
-  if (block_can_move(tmp_game_field, &tmp_current_figure, pieces)) {
+  add_tmp_game_field(tmp_game_field, tmp_current_figure, pieces);
+  if (block_can_move(game_field, current_figure, pieces)) {
     remove_current_figure(game_field, current_figure, pieces);
     current_figure->old_rotation = current_figure->rotation;
 
@@ -315,7 +301,7 @@ int block_can_move(int (*game_field)[10], figure *current_figure,
         ++k;
              if((current_figure->position.x[k] >= 10) ||
           (current_figure->position.x[k]  < 0) ||
-          (current_figure->position.y[k] >= 21)) {
+          (current_figure->position.y[k] >= 22)) {
             
         flag = 0;
           }
@@ -378,8 +364,6 @@ void eq_old_y_new_y(figure *current_figure) {
   }
   current_figure->position.init_old_y = current_figure->position.init_y;
 }
-
-
 void  add_tmp_game_field(int (*tmp_game_field)[10],figure * tmp_current_figure, const int (*pieces)[4][4][4]){
    int k = -1;
   for (int i = 0; i < 4; i++) {
@@ -399,29 +383,4 @@ void  add_tmp_game_field(int (*tmp_game_field)[10],figure * tmp_current_figure, 
   }
 
   }
-}
-
-
-int game_on(int (*game_field)[10]){
-  int flag = 1;
-    for (int j=1; j<10 && flag; j++){
-        if (game_field[1][j] != 0) { 
-            flag = 0;
-             }
-    }
-    return flag;
-}
-
-int reachet_bottom(int (*game_field)[10],figure *current_figure){
-  int flag = 1;
-
-  // for (int i = 0; i < 4; i++) {
-
-       if (game_field[current_figure->position.y[3] + 1][current_figure->position.x[3]] != 0) {
-      flag = 0;
-    }
-  
-   
-  // }
-    return flag;
 }
