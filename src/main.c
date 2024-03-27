@@ -1,20 +1,20 @@
 #include "game.h"
-  WINDOW *gameWindow;
+  
   const chtype BLOCK = ' ' | A_REVERSE;
 
 int main() {
   struct piece current = get_random_piece();
   struct piece next = get_random_piece();
   initWindow(&current);
-  gameWindow = newwin(22 + 2, 10 * 2 + 2, 2, 10);
+  current.gameWindow = newwin(22 + 2, 10 * 2 + 2, 2, 10);
   refresh();
   int flag = 1;
 
 
   while (flag)  //
     {
-    wclear(gameWindow);
-    wborder(gameWindow, BLOCK, BLOCK, BLOCK, BLOCK, BLOCK, BLOCK, BLOCK, BLOCK);
+    wclear(current.gameWindow);
+    wborder(current.gameWindow, BLOCK, BLOCK, BLOCK, BLOCK, BLOCK, BLOCK, BLOCK, BLOCK);
 
     switch (getch()) {
       case KEY_UP:
@@ -47,10 +47,10 @@ int main() {
 
     checkLine(&current);
 
-    wrefresh(gameWindow);
+    wrefresh(current.gameWindow);
   }  //
 
-  delwin(gameWindow);
+  delwin(current.gameWindow);
   endwin();
   return 0;
 }

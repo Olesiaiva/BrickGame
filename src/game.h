@@ -20,7 +20,7 @@
 // extern char gameScreen[22][10];
 extern const chtype BLOCK;
 extern const char tetris[7][4][4][4];
-extern WINDOW* gameWindow;
+// extern WINDOW* gameWindow;
 
 
 enum piece_e {
@@ -51,6 +51,7 @@ typedef struct piece {
   enum rotation rotation;
   struct coordinate position;
   char gameScreen[22][10];
+  WINDOW *gameWindow;
 } piece;
 
 void initWindow(struct piece* current);

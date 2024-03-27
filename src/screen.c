@@ -23,17 +23,17 @@ void printGameField(struct piece* current) {
   for (int y = 0; y < 22; y++) {
     for (int x = 0; x < 10; x++) {
       if (current->gameScreen[y][x]) {
-        wattron(gameWindow, COLOR_PAIR(current->gameScreen[y][x]));
-        mvwaddch(gameWindow, y + 1, x * 2 + 1, BLOCK);
-        mvwaddch(gameWindow, y + 1, x * 2 + 2, BLOCK);
-        wattroff(gameWindow, COLOR_PAIR(current->gameScreen[y][x]));
+        wattron(current->gameWindow, COLOR_PAIR(current->gameScreen[y][x]));
+        mvwaddch(current->gameWindow, y + 1, x * 2 + 1, BLOCK);
+        mvwaddch(current->gameWindow, y + 1, x * 2 + 2, BLOCK);
+        wattroff(current->gameWindow, COLOR_PAIR(current->gameScreen[y][x]));
       } else {
-        mvwaddch(gameWindow, y + 1, x * 2 + 1, ' ');
-        mvwaddch(gameWindow, y + 1, x * 2 + 2, ' ');
+        mvwaddch(current->gameWindow, y + 1, x * 2 + 1, ' ');
+        mvwaddch(current->gameWindow, y + 1, x * 2 + 2, ' ');
       }
     }
   }
-  wrefresh(gameWindow);
+  wrefresh(current->gameWindow);
 }
 
 void removeLine(struct piece* current,int y) {
