@@ -1,6 +1,5 @@
 #include "game.h"
   WINDOW *gameWindow;
-  char gameScreen[22][10];
   const chtype BLOCK = ' ' | A_REVERSE;
 
 int main() {

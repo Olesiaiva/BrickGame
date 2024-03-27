@@ -26,7 +26,9 @@ void moveDown(piece* current, piece* next) {
   if (!check_piece_overlap(current)) {
     current->position.y -= 1;
     addCurrentPiece(current);
-    *current = *next;
+    current->piece = next->piece;
+    current->rotation = next->rotation;
+    current->position = next->position;
     *next = get_random_piece();
   }
     wrefresh(gameWindow);
